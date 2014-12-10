@@ -1,14 +1,8 @@
-# ReadNFC
-# Thomas Baer
-
 import nxppy
 import httplib
 
-# Domain mit Ziel
 server = 'sldev.fritz.box'
-
-# Empfänger an den die gelesene UID angehängt wird
-uri = '/info.php?uid='
+uri = '/timr/g.php?uid='
 
 mifare = nxppy.Mifare()
 uid1 = ''
