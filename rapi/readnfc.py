@@ -1,6 +1,10 @@
+#!/usr/bin/env python
+
 # ReadNFC
 # Thomas Baer
 
+import logging
+import logging.handlers
 import httplib
 import time
 import re
@@ -8,14 +12,22 @@ import re
 import nxppy
 import RPi.GPIO as GPIO
 
+LOG_FILENAME = "/var/log/nfc.log"
+LOG_LEVEL = logging.INFO
 
-server = 'sldev.solongo.office'
-uri = '/timr/g.php?uid='
+SERVER = 'sldev.solongo.office'
+URI = '/timr/g.php?uid='
 GREEN = 47
 RED = 35
 ON = GPIO.HIGH
 OFF = GPIO.LOW
 
+logger = logging.getLogger(__name__)
+logger.setLevel(LOG_LEVEL)
+handler = logging.handlers.TimedRotatingFileHandler(LOG_FILENAME, when="midnight", backupCount=3)
+formatter = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 def blinkled(led, duration):
     GPIO.output(led, ON)
@@ -37,6 +49,7 @@ GPIO.setup(RED, GPIO.OUT)
 GPIO.output(RED, OFF)
 GPIO.output(GREEN, OFF)
 
+logger.info("NFC Start")
 mifare = nxppy.Mifare()
 uid1 = ''
 while True:
@@ -45,8 +58,10 @@ while True:
     try:
         uid1 = mifare.select()
         if uid1 is not None:
-            conn = httplib.HTTPConnection(server, 80, timeout=5)
-            conn.request("GET", uri + uid1)
+            blinkboth(1)
+            logger.info("Chip read:" + uid1)
+            conn = httplib.HTTPConnection(SERVER, 80, timeout=5)
+            conn.request("GET", URI + uid1)
             r = conn.getresponse()
             if r.status == 200:
                 blinkled(GREEN, 1)
