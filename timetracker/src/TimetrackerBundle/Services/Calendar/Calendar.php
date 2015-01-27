@@ -91,6 +91,18 @@ class Calendar {
 	=            Define Calendar Period            =
 	==============================================*/
 
+	public function getDays()
+	{
+		$days = [];
+
+		foreach ($this->period as $dateTimeObj)
+		{
+			$days[] = new Day($dateTimeObj->format('Y-m-d H:i:s'));
+		}
+
+		return $days;
+	}
+
 	public function getPeriod()
 	{
 		return $this->period;

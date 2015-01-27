@@ -27,8 +27,8 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for day in calendar.period %}
-				<tr> <!--  class="day.isWeekend() ? 'active' : ''" -->
+			{% for day in calendar.days %}
+				<tr class="{{ day.isWeekend() ? 'active' : '' }}">
 					<td>
 						<a href="{{ path('calendar_show', {'employee': employee.id, 'year': day.year, 'month': day.month, 'day': day.day }) }}">
 							{{ day.format('d.m.Y') }}
