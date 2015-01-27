@@ -6,9 +6,6 @@ timetracker_employees:
     resource: "@TimetrackerBundle/Resources/config/routing.yml"
     prefix:   /employee
 
-api:
-    resource: "@TimetrackerBundle/Resources/config/routing_api.yml"
-
 app:
     resource: @AppBundle/Controller/
     type:     annotation

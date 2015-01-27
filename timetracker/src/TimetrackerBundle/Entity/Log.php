@@ -8,7 +8,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 /**
  * Log
  *
- * @ORM\Table()
+ * @ORM\Table(name="logs")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */

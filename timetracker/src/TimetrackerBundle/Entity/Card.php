@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Card
  *
- * @ORM\Table()
+ * @ORM\Table(name="cards")
  * @ORM\Entity
  *
  * @UniqueEntity("signature")
