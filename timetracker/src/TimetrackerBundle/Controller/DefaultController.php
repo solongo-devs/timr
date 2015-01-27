@@ -85,6 +85,6 @@ class DefaultController extends Controller
 
 		$em->flush();
 
-		return $this->redirect($this->generateUrl('employees_index'));
+		return $this->redirect($this->generateUrl('employee'));
     }
 }
