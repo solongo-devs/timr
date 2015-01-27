@@ -1,4 +1,0 @@
-card_reader:
-    path: /api/cardreader/read/{card}
-    defaults: { _controller: TimetrackerBundle:CardReader:store }
-    methods: [GET]
