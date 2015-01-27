@@ -1,0 +1,24 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Karte hinzufügen</h1>
+
+	{{ form_start(form, {'action': path('card_store')}) }}
+		
+		<div class="form-group">
+			{{ form_label(form.signature, 'Karten-Code') }}
+			{{ form_errors(form.signature) }}
+			{{ form_widget(form.signature, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="form-group">
+			{{ form_label(form.employee, 'Für Mitarbeiter') }}
+			{{ form_errors(form.employee) }}
+			{{ form_widget(form.employee, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
+		<input type="submit" class="btn btn-primary" value="Karte erstellen">
+        <a href="{{ path('card') }}" class="btn btn-default">Zurück</a>
+
+	{{ form_end(form) }}
+	
+{% endblock %}

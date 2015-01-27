@@ -1,0 +1,37 @@
+<hr>
+<h4>Logs</h4>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Uhrzeit</th>
+			<th>Status</th>
+			<th>Optionen</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for log in calendar.logs %}
+			<tr>
+				<td>
+					{{ log.time | date('H:i') }}
+					{% if(log.isEdited) %}
+						(Orginal: {{ log.backupTime | date('H:i	') }})
+					{% endif %}
+				</td>
+				<td>
+					{% if(loop.index is odd ) %}
+						Rein
+					{% else %}
+						Raus
+					{% endif %}
+				</td>
+				<td>
+					<a href="{{ path('log_edit', { 'employee': employee.id, 'log': log.id }) }}">Bearbeiten</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<a href="{{ path('log_new', {'employee': employee.id, 'time': calendar.getCurrentDate.format('Y-m-d') }) }}" class="btn btn-primary">
+	Neuer Logeintrag
+</a>

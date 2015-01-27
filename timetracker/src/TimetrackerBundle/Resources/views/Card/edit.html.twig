@@ -1,0 +1,28 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Karte bearbeiten</h1>
+
+	{{ form_start(edit_form, {'action': path('card_update', {'card': card.signature}), 'method': 'POST'}) }}
+		
+		<div class="form-group">
+			{{ form_label(edit_form.signature, 'Karten-Code') }}
+			{{ form_errors(edit_form.signature) }}
+			{{ form_widget(edit_form.signature, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="form-group">
+			{{ form_label(edit_form.employee, 'Für Mitarbeiter') }}
+			{{ form_errors(edit_form.employee) }}
+			{{ form_widget(edit_form.employee, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
+		<input type="submit" class="btn btn-primary" value="Änderungen speichern">
+        <a href="{{ path('card') }}" class="btn btn-default">Zurück</a>
+
+	{{ form_end(edit_form) }}
+
+	{{ form_start(delete_form) }}
+		<input type="submit" class="btn btn-danger" value="Karte löschen">
+	{{ form_end(delete_form) }}
+	
+{% endblock %}

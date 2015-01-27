@@ -1,0 +1,26 @@
+# employees_index:
+#     path: /
+#     defaults: { _controller: TimetrackerBundle:Default:index }
+
+calendar_show:
+    pattern: /{employee}/calendar/{year}/{month}/{day}
+    defaults: { _controller: TimetrackerBundle:Calendar:show, year: null , month: null, day: null }
+
+upload_logfile:
+    path: /upload
+    defaults: { _controller: TimetrackerBundle:Default:uploadLogfile }
+    methods: [GET]
+
+store_logfile:
+    path: /upload
+    defaults: { _controller: TimetrackerBundle:Default:storeLogfile }
+    methods: [POST]
+
+notes_store:
+    path: /{id}/notes/{year}/{month}/{day}
+    defaults: { _controller: TimetrackerBundle:Calendar:storeNote }
+    methods: [POST]
+
+add_card:
+    path: /{id}/addCard
+    defaults: { _controller: TimetrackerBundle:Employee:addCard }

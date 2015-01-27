@@ -1,0 +1,90 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+	{{ include('TimetrackerBundle:Calendar:navigation.html.twig') }}
+	<table class="table table-condensed" style="table-layout:fixed;">
+		<col width="20%">
+		<col width="20%">
+		<col width="20%" align="right">
+		<col width="40%">
+		<thead>
+			<tr>
+				<th colspan="4">
+					<div class="pull-left">
+						Angestellte/r: {{ employee.fullName }}
+					</div>
+					<div class="pull-right">
+						Gesamtarbeitszeit: {{ calendar.totalWorkingHours }} 
+					</div>
+				</th>
+			</tr>
+			<tr>
+				<th>Tag</th>
+				<th>Arbeitszeit (in Stunden)</th>
+				<th>Status</th>
+				<th>Notiz</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for day in calendar.period %}
+				<tr class="{{ day.isWeekend() ? 'active' : '' }}">
+					<td>
+						<a href="{{ path('calendar_show', {'employee': employee.id, 'year': day.year, 'month': day.month, 'day': day.day }) }}">
+							{{ day.format('d.m.Y') }}
+						</a>
+					</td>
+					<td>
+						{{ calendar.getWorkingHours(day) }}
+					</td>
+					<td>
+						{% if( day.isWeekday() and calendar.hasNoWorkingHours(day) ) %}
+							<a href="#" class="status"
+							   data-name="Status"
+							   data-type="select"
+							   data-pk="1"
+							   data-url="/employee/{{employee.id}}/notes/{{day.year}}/{{day.month}}/{{day.day}}"
+							   data-title="Status">
+								{{ calendar.getStatus(day)|trim}}
+							</a>
+						{% endif %}
+					</td>
+					<td>
+						<a href="#" class="note"
+						   data-name="Body"
+						   data-type="textarea"
+						   data-pk="1"
+						   data-url="/employee/{{employee.id}}/notes/{{day.year}}/{{day.month}}/{{day.day}}"
+						   data-title="Notiz">
+						   {{- calendar.note(day) -}}
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	{% if(calendar.view == 'day') %}
+		{{ include('TimetrackerBundle:Calendar:details.html.twig') }}
+	{% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		$(document).ready(function() {
+		    $('.note').editable({
+		    	emptytext: '<i class="glyphicon glyphicon-plus"></i>',
+		    });
+
+		    $('.status').editable({
+				source: [
+					{value: null, text: '-- Keine Angabe --' },
+					{value: 1, text: 'Urlaub'},
+					{value: 2, text: 'Krank'}
+				],
+		    	emptytext: '<i class="glyphicon glyphicon-play"></i>',
+			});
+		});
+	</script>
+{% endblock %}
