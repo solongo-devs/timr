@@ -74,7 +74,9 @@ class DefaultController extends Controller
 					$date = DateTime::createFromFormat('d.m.Y H:i', $log[2]);
 
 					$newLog = new Log;
+					$newLog->setCardSignature($cardSignature);
 					$newLog->setTime($date);
+					$newLog->setIsEdited(false);
 					$newLog->setCard($card);
 					$em->persist($newLog);
 				}
