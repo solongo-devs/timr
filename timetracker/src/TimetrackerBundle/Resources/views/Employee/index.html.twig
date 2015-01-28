@@ -1,0 +1,31 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Mitarbeiter</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Optionen</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for employee in employees %}
+            <tr>
+                <td><a href="{{ path('employee_show', { 'id': employee.id }) }}">{{ employee.fullName }}</a></td>
+                <td>
+                    <a href="{{ path('calendar_show', {
+                    'employee': employee.id,
+                    'year': 'now'|date('Y'),
+                    'month': 'now'|date('m') })}}">Kalender</a> | 
+                    <a href="{{ path('employee_edit', { 'id': employee.id }) }}">Bearbeiten</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('employee_new') }}" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Mitarbeiter hinzufügen
+    </a>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Employee creation</h1>
+
+	{{ form_start(form) }}
+		
+		<div class="form-group">
+			{{ form_label(form.firstName, 'Vorname') }}
+			{{ form_errors(form.firstName) }}
+			{{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="form-group">
+			{{ form_label(form.lastName, 'Nachname') }}
+			{{ form_errors(form.lastName) }}
+			{{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
+		<input type="submit" class="btn btn-primary" value="Erstellen">
+        <a href="{{ path('employee') }}" class="btn btn-default">Zurück</a>
+
+	{{ form_end(form) }}
+	
+{% endblock %}

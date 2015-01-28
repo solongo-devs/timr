@@ -1,0 +1,30 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+	<h1>Verfügbare Karten</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Karte</th>
+				<th>Mitarbeiter</th>
+				<th>Optionen</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for card in cards %}
+				<tr>
+    				<td>{{ card.signature }}</td>
+    				<td>{{ card.employee.fullName }}</td>
+    				<td>
+    					<a href="{{ path('card_edit', {'card': card.signature}) }}">Bearbeiten</a>
+    				</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('card_new') }}" class="btn btn-primary">neue Karte hinzufügen</a>
+
+{% endblock %}

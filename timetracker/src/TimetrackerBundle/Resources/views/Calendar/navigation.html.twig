@@ -1,0 +1,17 @@
+<nav>
+	<ul class="pager">
+		<li class="previous">
+			<a href="{{ calendar.getPrevPageUrl() }}">
+				<span aria-hidden="true">&larr;</span> {{ calendar.getPrevAnchorTag }}
+			</a>
+		</li>
+		<li>
+			<b>Arbeitszeit: {{ calendar.title }}</b>
+		</li>
+		<li class="next">
+			<a href="{{ calendar.getNextPageUrl() }}">
+				{{ calendar.getNextAnchorTag }} <span aria-hidden="true">&rarr;</span>
+			</a>
+		</li>
+	</ul>
+</nav>

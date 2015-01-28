@@ -1,0 +1,28 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Mitarbeiter bearbeiten</h1>
+	
+	{{ form_start(edit_form) }}
+		
+		<div class="form-group">
+			{{ form_label(edit_form.firstName, 'Vorname') }}
+			{{ form_errors(edit_form.firstName) }}
+			{{ form_widget(edit_form.firstName, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="form-group">
+			{{ form_label(edit_form.lastName, 'Nachname') }}
+			{{ form_errors(edit_form.lastName) }}
+			{{ form_widget(edit_form.lastName, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
+		<input type="submit" class="btn btn-primary" value="Änderungen speichern">
+        <a href="{{ path('employee') }}" class="btn btn-default">Zurück</a>
+
+	{{ form_end(edit_form) }}
+    
+    {{ form_start(delete_form) }}
+    	<input type="submit" class="btn btn-danger pull-right" value="Mitarbeiter Löschen">
+    {{ form_end(delete_form) }}
+
+{% endblock %}

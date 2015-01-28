@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+	<p>Löscht alle Einträge aus der Datenbank.</p>
+
+	<form action="{{ path('store_logfile') }}" method="POST" enctype="multipart/form-data">
+		
+		<div class="form-group">
+			<label for="log">CSV-Datei</label>
+			<input type="file" name="log">
+		</div>
+
+		<button type="submit" class="btn btn-primary">Hochladen</button>
+
+	</form>
+
+{% endblock %}

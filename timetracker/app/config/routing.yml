@@ -1,0 +1,15 @@
+home:
+    path: /
+    defaults: { _controller: TimetrackerBundle:Employee:index }
+
+timetracker_employees:
+    resource: "@TimetrackerBundle/Resources/config/routing.yml"
+    prefix:   /employee
+
+app:
+    resource: @AppBundle/Controller/
+    type:     annotation
+
+employee:
+    resource: @TimetrackerBundle/Controller/
+    type:     annotation
