@@ -83,3 +83,6 @@ while True:
             time.sleep(5)
     except nxppy.SelectError:
         pass
+    except Exception:
+        import traceback
+        logger.error('generic exception: ' + traceback.format_exc())
