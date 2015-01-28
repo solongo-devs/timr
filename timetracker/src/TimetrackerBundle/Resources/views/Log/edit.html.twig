@@ -1,0 +1,29 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <h1>Log bearbeiten</h1>
+	
+	{{ form_start(edit_form, {'action': path('log_update', { 'employee': employee.id, 'log': log.id}), 'method': 'POST'}) }}
+		
+		{{ form_errors(edit_form) }}
+
+		<div class="form-group">
+			{{ form_label(edit_form.time, 'Uhrzeit') }}
+			{{ form_errors(edit_form.time) }}
+			{{ form_widget(edit_form.time) }}
+		</div>
+
+		<input type="submit" class="btn btn-primary" value="Änderungen speichern">
+        <a href="{{ path('calendar_show', {
+        	'employee': employee.id,
+        	'year': log.time.format('Y'),
+        	'month': log.time.format('m'),
+        	'day': log.time.format('d') }) }}" class="btn btn-default">Zurück</a>
+
+	{{ form_end(edit_form) }}
+
+	{{ form_start(delete_form) }}
+		<input type="submit" class="btn btn-danger" value="Log-Eintrag löschen">
+	{{ form_end(delete_form) }}
+
+{% endblock %}

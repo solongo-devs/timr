@@ -1,0 +1,14 @@
+body {
+	padding-top: 20px;
+}
+
+.editable-empty {
+	color: #ccc;
+	display: block;
+	height: 20px;
+}
+
+.editable-click, a.editable-click, a.editable-click:hover {
+	text-decoration: none;
+	border-bottom: none;
+}

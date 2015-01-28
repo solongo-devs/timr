@@ -1,0 +1,4 @@
+services:
+   calendar:
+       class: TimetrackerBundle\Services\Calendar\WorkTimeCalendar
+       arguments: [ "@request_stack", "@router", "@doctrine.orm.entity_manager" ]
