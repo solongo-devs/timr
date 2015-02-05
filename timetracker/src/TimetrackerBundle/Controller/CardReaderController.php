@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use TimetrackerBundle\Entity\Log;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class CardReaderController extends Controller
 {
@@ -22,9 +23,12 @@ class CardReaderController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$card = $em->getRepository('TimetrackerBundle:Card')->findOneBy(['signature' => $signature]);
 
+		$response = new Response('');
+
 		if (!$card)
-		{
-			return new JsonResponse(['success' => false], 200);
+		{      
+	        $response->headers->set('X-Return', '5');
+	        return $response;
 		}
 
 		$newLog = new Log;
@@ -34,6 +38,7 @@ class CardReaderController extends Controller
 		$em->persist($newLog);
 		$em->flush();
 
-		return new JsonResponse(['success' => true], 200);
+	    $response->headers->set('X-Return', '2');
+	    return $response;
 	}
 }
