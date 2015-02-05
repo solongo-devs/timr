@@ -27,7 +27,7 @@
 		</thead>
 		<tbody>
 			{% for day in calendar.days %}
-				<tr class="{{ day.isWeekend() ? 'active' : '' }}">
+				<tr class="{{ day.isWeekend() ? 'active' : '' }} {{ calendar.hasIrregularLogs(day) ? 'danger' : '' }}">
 					<td>
 						<a href="{{ path('calendar_show', {'employee': employee.id, 'year': day.year, 'month': day.month, 'day': day.day }) }}">
 							{{ day.format('d.m.Y') }}
@@ -80,7 +80,8 @@
 				source: [
 					{value: null, text: '-- Keine Angabe --' },
 					{value: 1, text: 'Urlaub'},
-					{value: 2, text: 'Krank'}
+					{value: 2, text: 'Krank'},
+					{value: 3, text: 'Schule'}
 				],
 		    	emptytext: '<i class="glyphicon glyphicon-play"></i>',
 			});
