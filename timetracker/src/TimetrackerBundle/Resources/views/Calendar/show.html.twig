@@ -2,6 +2,8 @@
 
 {% block body %}
 
+	<h1>Angestellte/r: {{ employee.fullName }}</h1>
+
 	{{ include('TimetrackerBundle:Calendar:navigation.html.twig') }}
 	<table class="table table-condensed" style="table-layout:fixed;">
 		<col width="20%">
@@ -11,9 +13,6 @@
 		<thead>
 			<tr>
 				<th colspan="4">
-					<div class="pull-left">
-						Angestellte/r: {{ employee.fullName }}
-					</div>
 					<div class="pull-right">
 						Gesamtarbeitszeit: {{ calendar.totalWorkingHours }} 
 					</div>

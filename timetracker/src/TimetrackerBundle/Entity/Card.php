@@ -40,6 +40,7 @@ class Card
 
     /**
      * @ORM\OneToMany(targetEntity="Log", mappedBy="card")
+     * @ORM\OrderBy({"time" = "ASC"})
      */
     protected $logs;
 
