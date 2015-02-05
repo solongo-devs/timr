@@ -146,6 +146,24 @@ class WorkTimeCalendar extends Calendar {
 		}
 	}
 
+	public function hasIrregularLogs(Day $day) {
+		$logs = $this->getLogs();
+		
+		$dateString = $day->getYear().$day->getMonth().$day->getDay();
+		
+		$counter = 0;
+		foreach( $logs as $log ) {
+			$logDate = $log->getTime()->format('Ymd');
+			if( $dateString == $logDate ) {
+				$counter++;
+			}
+		}
+		
+		$isIrregular = $counter % 2;
+
+		return $isIrregular;
+	}
+
 	/*===============================
 	=            Routing            =
 	===============================*/

@@ -14,7 +14,8 @@ class Note
 {
     protected $statusOptions = [
         1 => 'Urlaub',
-        2 => 'Krank'
+        2 => 'Krank',
+        3 => 'Schule'
     ];
 
     /**
