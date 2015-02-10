@@ -1,0 +1,50 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+	<div class="row">
+		<div style="width: 600px; margin-left: -300px; margin-top: -110px; position: absolute; left: 50%; top: 50%;">
+			<form action="{{ path('login_check') }}" method="post">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						Login
+					</div>
+	
+					<div class="panel-body">
+		    			{% if error != ''  %}
+		    				<p class="bg-danger" style="padding: 15px;">
+		    					{{ error.message }}
+		    				</p>
+		    			{% endif %}
+
+		    			{% if msg != ''  %}
+		    				<p class="bg-success" style="padding: 15px;">
+		    					{{ msg }}
+		    				</p>
+		    			{% endif %}
+		    			
+		    			<div class="col-md-6 form-group">					
+		    				<label class="form-label" for="username">Benutzername</label>
+					    	<input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" />
+						</div>
+						
+						<div class="col-md-6 form-group">	
+					    	<label class="form-label" for="password">Passwort</label>
+					    	<input type="password" class="form-control" id="password" name="_password" />
+						</div>
+
+						<div class="col-md-6">
+    						<a href="{{ path('register') }}"><button type="button" class="btn btn-default">Registrieren</button></a>
+    						<a href="{{ path('new_password') }}"><button type="button" class="btn btn-default pull-right">Neues Passwort</button></a>
+    					</div>
+    					<div class="col-md-6">
+    			    		<button type="submit" class="btn btn-primary pull-right">Login</button>
+    			    	</div>
+	
+				    </div>
+			    </div>
+			</form>
+		</div>
+	</div>
+
+{% endblock %}

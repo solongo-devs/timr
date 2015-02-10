@@ -32,6 +32,13 @@
 	</tbody>
 </table>
 
-<a href="{{ path('log_new', {'employee': employee.id, 'time': calendar.getCurrentDate.format('Y-m-d') }) }}" class="btn btn-primary">
+{% for day in calendar.days %}
+<a href="{{ path('calendar_show', {
+'employee': employee.id,
+'year': day.year,
+'month': day.month })}}" class="btn btn-default">Zurück</a>
+{% endfor %}
+
+<a href="{{ path('log_new', {'employee': employee.id, 'time': calendar.getCurrentDate.format('Y-m-d') }) }}" class="btn btn-primary pull-right">
 	Neuer Logeintrag
 </a>

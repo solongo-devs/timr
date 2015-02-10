@@ -17,6 +17,9 @@ class EmployeeType extends AbstractType
         $builder
             ->add('firstName')
             ->add('lastName')
+            ->add('username')
+            ->add('email')
+            ->add('password', 'repeated', array( 'type' => 'password', 'first_name' => 'password', 'second_name' => 'confirm', 'invalid_message' => 'Die Passwörter müssen übereinstimmen' ))
         ;
     }
     
