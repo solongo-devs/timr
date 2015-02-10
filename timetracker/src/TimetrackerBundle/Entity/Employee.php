@@ -4,14 +4,15 @@ namespace TimetrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Employee
  *
  * @ORM\Table(name="employees")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="TimetrackerBundle\Entity\EmployeeRepository")
  */
-class Employee
+class Employee implements UserInterface, \Serializable
 {
     /**
      * @var integer
@@ -46,10 +47,45 @@ class Employee
      */
     protected $notes;
 
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $username;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $salt;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+     *
+     */
+    private $roles;
+
     public function __construct()
     {
         $this->cards = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->isActive = true;
+        $this->roles = new ArrayCollection();
+        // may not be needed, see section on salt below
+        $this->salt = md5(uniqid(null, true));
     }
 
     /**
@@ -203,4 +239,120 @@ class Employee
     {
         return $this->notes;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function setUsername($value)
+    {
+        $this->username = $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+        // you *may* need a real salt depending on your encoder
+        // see section on salt below
+        return $this->salt;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function setPassword($value)
+    {
+        $this->password = $value;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setEmail($value)
+    {
+        $this->email = $value;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getRoles()
+    {
+        return $this->roles->toArray();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+    }
+
+    /**
+     * Add role
+     *
+     * @param \TimetrackerBundle\Entity\Role $role
+     * @return Employee
+     */
+    public function addRole(\TimetrackerBundle\Entity\Role $role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized);
+    }
+
 }

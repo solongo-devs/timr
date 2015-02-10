@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use TimetrackerBundle\Entity\Employee;
 use TimetrackerBundle\Form\EmployeeType;
+use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Employee controller.
@@ -29,7 +31,25 @@ class EmployeeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $employees = $em->getRepository('TimetrackerBundle:Employee')->findAll();
+		$sc = $this->get('security.context');
+		$user = $sc->getToken()->getUser();
+
+		$employees = array();
+		if( $sc->isGranted('ROLE_ADMIN') ) {
+        	$employees = $em->getRepository('TimetrackerBundle:Employee')->findAll();
+		} else if( $sc->isGranted('ROLE_MDBOSS') ) {
+			$allEmployees = $em->getRepository('TimetrackerBundle:Employee')->findAll();
+			foreach( $allEmployees as $employee ) {
+				$allRoles = $employee->getRoles();
+				foreach( $allRoles as $role ) {
+					if( $role->getRole() == 'ROLE_MEDIADESIGNER' ) {
+						$employees[] = $employee;
+					}
+				}
+			}
+		} else {
+			$employees[] = $em->getRepository('TimetrackerBundle:Employee')->find($user->getId());
+		}
 
         return array(
             'employees' => $employees,
@@ -49,7 +69,14 @@ class EmployeeController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+     		$encoder = $this->get('security.encoder_factory')->getEncoder($entity);
+			$hashed_password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+    		$entity->setPassword($hashed_password);
+    		
             $em = $this->getDoctrine()->getManager();
+			$role = $em->getRepository('TimetrackerBundle:Role')->findOneByRole('ROLE_USER');
+			$entity->addRole($role);
+
             $em->persist($entity);
             $em->flush();
 
@@ -131,6 +158,25 @@ class EmployeeController extends Controller
      */
     public function editAction($id)
     {
+    	$sc = $this->get('security.context');
+		$user = $sc->getToken()->getUser();
+		$userId = $user->getId();
+
+        if( $id != $userId && !$sc->isGranted('ROLE_ADMIN') && !$sc->isGranted('ROLE_MDBOSS') ) {
+        	throw new AccessDeniedException("Unauthorized Access");
+        } else if( $sc->isGranted('ROLE_MDBOSS') && $id != $userId ) {
+        	$allRoles = $employee->getRoles();
+        	$show = 0;
+        	foreach( $allRoles as $role ) {
+        		if( $role->getRole() == 'ROLE_MEDIADESIGNER' ) {
+        			$show = 1;
+        		}
+        	}
+        	if( $show == 0 ) {
+        		throw new AccessDeniedException("Unauthorized Access");
+        	}
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $employee = $em->getRepository('TimetrackerBundle:Employee')->find($id);
@@ -187,6 +233,10 @@ class EmployeeController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+     		$encoder = $this->get('security.encoder_factory')->getEncoder($entity);
+			$hashed_password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+    		$entity->setPassword($hashed_password);
+ 
             $em->flush();
 
             return $this->redirect($this->generateUrl('employee_edit', array('id' => $id)));

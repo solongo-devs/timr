@@ -25,7 +25,9 @@
         {% endfor %}
         </tbody>
     </table>
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('employee_new') }}" class="btn btn-primary">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Mitarbeiter hinzufügen
     </a>
+    {% endif %}
 {% endblock %}

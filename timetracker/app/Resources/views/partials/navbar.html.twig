@@ -14,9 +14,8 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="{{ path('card') }}">Karten</a></li>
-        <li><a href="{{ path('upload_logfile') }}">Logfile hochladen</a></li>
-      </ul>
+        {% if is_granted('ROLE_ADMIN') %}<li><a href="{{ path('card') }}">Karten</a></li>{% endif %}
+      </ul>  
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

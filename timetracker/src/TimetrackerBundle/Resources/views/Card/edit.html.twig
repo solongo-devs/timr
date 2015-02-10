@@ -5,24 +5,29 @@
 
 	{{ form_start(edit_form, {'action': path('card_update', {'card': card.signature}), 'method': 'POST'}) }}
 		
-		<div class="form-group">
+		<div class="col-md-12 form-group">
 			{{ form_label(edit_form.signature, 'Karten-Code') }}
 			{{ form_errors(edit_form.signature) }}
 			{{ form_widget(edit_form.signature, {'attr': {'class': 'form-control'}}) }}
 		</div>
-		<div class="form-group">
+		<div class="col-md-12 form-group">
 			{{ form_label(edit_form.employee, 'Für Mitarbeiter') }}
 			{{ form_errors(edit_form.employee) }}
 			{{ form_widget(edit_form.employee, {'attr': {'class': 'form-control'}}) }}
 		</div>
-
-		<input type="submit" class="btn btn-primary" value="Änderungen speichern">
-        <a href="{{ path('card') }}" class="btn btn-default">Zurück</a>
+		<div class="col-md-6 form-group">
+		</div>
+		<div class="col-md-6 form-group">
+			<input type="submit" class="btn btn-primary pull-right" value="Änderungen speichern">
+        	<a href="{{ path('card') }}" class="btn btn-default">Zurück</a>
+		</div>
 
 	{{ form_end(edit_form) }}
 
 	{{ form_start(delete_form) }}
-		<input type="submit" class="btn btn-danger" value="Karte löschen">
+		<div class="col-md-12 form-group">
+			<input type="submit" style="margin-top: -49px;" class="btn btn-danger pull-left" value="Karte löschen">
+		</div>
 	{{ form_end(delete_form) }}
 	
 {% endblock %}

@@ -1,24 +1,32 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>{{ employee.fullName }}</h1>
+<div style="width: 380px;">
+    <div class="panel panel-default">
+  		<div class="panel-heading">
+    		<h1 class="panel-title">{{ employee.fullName }}</h1>
+    	</div>
     
-    <dl class="dl-horizontal">
-        <dt>Id</dt>
-        <dd>{{ employee.id }}</dd>
-        <dt>Vorname</dt>
-        <dd>{{ employee.firstName }}</dd>
-        <dt>Nachname</dt>
-        <dd>{{ employee.lastName }}</dd>
-        <dt>Karten</dt>
-        {% for card in employee.cards %}
-            <dd>{{ card.signature }}</dd>
-        {% endfor %}
-    </dl>
-    <a href="{{ path('employee_edit', { 'id': employee.id }) }}" class="btn btn-primary">
-        Bearbeiten
-    </a>
-    <a href="{{ path('employee') }}" class="btn btn-default">
-        Zurück
-    </a>
+    	<div class="panel-body">
+		    <dl class="dl-horizontal">
+		        <dt>Id</dt>
+		        <dd>{{ employee.id }}</dd>
+		        <dt>Vorname</dt>
+		        <dd>{{ employee.firstName }}</dd>
+		        <dt>Nachname</dt>
+		        <dd>{{ employee.lastName }}</dd>
+		        <dt>Karten</dt>
+		        {% for card in employee.cards %}
+		            <dd>{{ card.signature }}</dd>
+		        {% endfor %}
+		    </dl>
+    		<a href="{{ path('employee') }}" class="btn btn-default">
+        		Zurück
+    		</a>
+    		<a href="{{ path('employee_edit', { 'id': employee.id }) }}" class="btn btn-primary pull-right">
+        		Bearbeiten
+    		</a>    
+    	</div>
+    </div>
+</div>
 {% endblock %}

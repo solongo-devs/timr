@@ -1,12 +1,54 @@
 security:
+    encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: bcrypt
+            cost: 12
+        TimetrackerBundle\Entity\Employee:
+            algorithm:            pbkdf2
+            hash_algorithm:       sha512
+            encode_as_base64:     true
+            iterations:           1000
+    role_hierarchy:
+        ROLE_LINKGENERATOR: ROLE_USER
+        ROLE_FEEDCHECKER: ROLE_USER
+        ROLE_PRICECHECKER: ROLE_USER
+        ROLE_MDBOSS: ROLE_USER
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_MDBOSS, ROLE_ALLOWED_TO_SWITCH]
+
     providers:
-        in_memory:
-            memory: ~
+        main:
+            entity:
+                class: TimetrackerBundle\Entity\Employee
+                property: username
 
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt|error)|css|images|js)/
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        default:
+        login:
+            pattern:  ^/demo/secured/login$
+            security: false
+
+        secured_area:
+            pattern:    ^/
             anonymous: ~
+            form_login:
+                check_path: login_check
+                login_path: login
+                default_target_path: /
+            logout:
+                path:   /logout
+                target: login
+
+    access_denied_url: /login
+
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/card, roles: ROLE_ADMIN }
+        - { path: ^/employee/new, roles: ROLE_ADMIN }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/newpassword, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_USER }

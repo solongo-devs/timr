@@ -8,6 +8,7 @@ use TimetrackerBundle\Entity\Employee;
 use TimetrackerBundle\Entity\Note;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CalendarController extends Controller
 {
@@ -16,6 +17,25 @@ class CalendarController extends Controller
 	 */
     public function showAction(Employee $employee, $year, $month, $day)
     {
+    	$sc = $this->get('security.context');
+		$user = $sc->getToken()->getUser();
+		$userId = $user->getId();
+
+        if( $employee->getId() != $userId && !$sc->isGranted('ROLE_ADMIN') && !$sc->isGranted('ROLE_MDBOSS') ) {
+        	throw new AccessDeniedException("Unauthorized Access");
+        } else if( $sc->isGranted('ROLE_MDBOSS') && $employee->getId() != $userId ) {
+        	$allRoles = $employee->getRoles();
+        	$show = 0;
+        	foreach( $allRoles as $role ) {
+        		if( $role->getRole() == 'ROLE_MEDIADESIGNER' ) {
+        			$show = 1;
+        		}
+        	}
+        	if( $show == 0 ) {
+        		throw new AccessDeniedException("Unauthorized Access");
+        	}
+        }
+        
         $calendar = $this->get('calendar');
         $calendar->personalize($employee);
 

@@ -13,3 +13,17 @@ app:
 employee:
     resource: @TimetrackerBundle/Controller/
     type:     annotation
+
+new_password:
+    path: /newpassword
+    defaults: { _controller: TimetrackerBundle:Security:newPassword }
+register:
+    path: /register
+    defaults: { _controller: TimetrackerBundle:Security:Register }
+login:
+    path:     /login
+    defaults: { _controller: TimetrackerBundle:Security:login }
+login_check:
+    path: /login_check
+logout:
+    path: /logout
