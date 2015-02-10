@@ -48,6 +48,7 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/card, roles: ROLE_ADMIN }
         - { path: ^/employee/new, roles: ROLE_ADMIN }
+        - { path: ^/api/cardreader, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/newpassword, roles: IS_AUTHENTICATED_ANONYMOUSLY }
