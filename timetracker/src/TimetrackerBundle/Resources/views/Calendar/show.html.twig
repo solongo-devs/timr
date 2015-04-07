@@ -37,7 +37,7 @@
 						{{ calendar.getWorkingHours(day) }}
 					</td>
 					<td>
-						{% if( day.isWeekday() and calendar.hasNoWorkingHours(day) ) %}
+						{% if( day.isWeekday() ) %}
 							<a href="#" class="status"
 							   data-name="Status"
 							   data-type="select"
