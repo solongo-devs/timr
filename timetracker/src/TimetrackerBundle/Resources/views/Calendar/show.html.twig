@@ -14,7 +14,12 @@
 			<tr>
 				<th colspan="4">
 					<div class="pull-right">
-						Gesamtarbeitszeit: {{ calendar.totalWorkingHours }} 
+						Gesamtarbeitszeit: {{ calendar.totalWorkingHours }} <br />
+						{% if(calendar.view != 'day') %}
+							Durchschnitt pro Tag (Monat): {{ calendar.averageHoursForMonth }}<br /> 
+							Durchschnitt pro Tag (Jahr): {{ calendar.averagehoursforYear }}<br />
+							&Uuml;berstunden: {{ calendar.getOvertime }}
+						{% endif %}
 					</div>
 				</th>
 			</tr>
@@ -27,7 +32,7 @@
 		</thead>
 		<tbody>
 			{% for day in calendar.days %}
-				<tr class="{{ day.isWeekend() ? 'active' : '' }} {{ calendar.hasIrregularLogs(day) ? 'danger' : '' }}">
+				<tr class="{{ day.isWeekend() ? 'active' : '' }} {{ calendar.hasIrregularLogs(day) ? 'danger' : '' }} {{ calendar.getHoliday(day) ? 'warning' : '' }}">
 					<td>
 						<a href="{{ path('calendar_show', {'employee': employee.id, 'year': day.year, 'month': day.month, 'day': day.day }) }}">
 							{{ day.format('d.m.Y') }}
@@ -35,6 +40,7 @@
 					</td>
 					<td>
 						{{ calendar.getWorkingHours(day) }}
+						{{ calendar.getHoliday(day) }}
 					</td>
 					<td>
 						{% if( day.isWeekday() ) %}

@@ -49,11 +49,24 @@ class Calendar {
 
 	protected $em;
 
-	public function __construct(RequestStack $requestStack, Router $router, EntityManager $em)
+	protected $requestStack;
+
+	protected $holidays;
+
+	public function __construct(RequestStack $requestStack, Router $router, EntityManager $em, $month = null, $year = null)
 	{
+		$this->requestStack = $requestStack;
 		$this->request = $requestStack->getCurrentRequest();
-		$this->year = $this->request->get('year') ?: date('Y');
-		$this->month = $this->request->get('month');
+		if( $year != null ) {
+			$this->year = $year;
+		} else {
+			$this->year = $this->request->get('year') ?: date('Y');
+		}
+		if( $month != null ) {
+			$this->month = $month;
+		} else {
+			$this->month = $this->request->get('month');
+		}
 		$this->day = $this->request->get('day');
 		$this->router = $router;
 		$this->em = $em;
@@ -65,6 +78,7 @@ class Calendar {
 	{
 		$this->defineView();
 		$this->definePeriod();
+		$this->holidays = $this->getHolidays();
 	}
 
 	/*===================================
@@ -233,4 +247,43 @@ class Calendar {
 	{
 		return new DateInterval($this->intervals[$this->view]);
 	}
+	
+	/*======================
+	=       ICS Stuff      =
+	======================*/
+	
+	function getHolidays() {
+		return $this->icsToArray(__DIR__.'/../../Resources/ics/Feiertage_Sachsen_'.$this->year.'.ics');
+	}
+	
+	function icsToArray($paramUrl) {
+	    
+	    if(file_exists($paramUrl) ) {
+		    $icsFile = file_get_contents($paramUrl);
+		
+		    $icsData = explode("BEGIN:", $icsFile);
+		
+		    foreach($icsData as $key => $value) {
+		        $icsDatesMeta[$key] = explode("\n", $value);
+		    }
+		
+		    foreach($icsDatesMeta as $key => $value) {
+		        foreach($value as $subKey => $subValue) {
+		            if ($subValue != "") {
+		                if ($key != 0 && $subKey == 0) {
+		                    $icsDates[$key]["BEGIN"] = $subValue;
+		                } else {
+		                    $subValueArr = explode(":", $subValue, 2);
+		                    $icsDates[$key][$subValueArr[0]] = $subValueArr[1];
+		                }
+		            }
+		        }
+		    }
+	
+	    	return $icsDates;
+	    } else {
+	    	return array();
+	    }
+	}	
+	
 }

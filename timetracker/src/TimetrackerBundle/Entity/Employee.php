@@ -355,4 +355,8 @@ class Employee implements UserInterface, \Serializable
         ) = unserialize($serialized);
     }
 
+	public function getFirstDay() {
+		return $this->getLogs()->first()->getTime();
+	}
+
 }
