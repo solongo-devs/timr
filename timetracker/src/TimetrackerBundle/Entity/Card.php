@@ -28,7 +28,7 @@ class Card
     /**
      * @var integer
      *
-     * @ORM\Column(name="employee_id", type="integer")
+     * @ORM\Column(name="employee_id", type="integer", nullable=true)
      */
     private $employeeId;
 
