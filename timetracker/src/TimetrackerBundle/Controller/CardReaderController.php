@@ -31,7 +31,7 @@ class CardReaderController extends Controller
 	        $response->headers->set('X-Return', '5');
 	        $card = new Card();
 	        $card->setSignature($signature);
-	        $em->persis($card);
+	        $em->persist($card);
 		}
 
 		$newLog = new Log;
