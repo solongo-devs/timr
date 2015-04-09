@@ -32,6 +32,8 @@ class CardReaderController extends Controller
 	        $card = new Card();
 	        $card->setSignature($signature);
 	        $em->persist($card);
+		} else {
+	    	$response->headers->set('X-Return', '2');		
 		}
 
 		$newLog = new Log;
@@ -41,7 +43,6 @@ class CardReaderController extends Controller
 		$em->persist($newLog);
 		$em->flush();
 
-	    $response->headers->set('X-Return', '2');
 	    return $response;
 	}
 }
