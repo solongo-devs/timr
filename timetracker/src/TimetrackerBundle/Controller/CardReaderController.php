@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use TimetrackerBundle\Entity\Log;
+use TimetrackerBundle\Entity\Card;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,7 +29,9 @@ class CardReaderController extends Controller
 		if (!$card)
 		{      
 	        $response->headers->set('X-Return', '5');
-	        return $response;
+	        $card = new Card();
+	        $card->setSignature($signature);
+	        $em->persis($card);
 		}
 
 		$newLog = new Log;
