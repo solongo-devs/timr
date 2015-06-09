@@ -4,6 +4,7 @@ use DateInterval, DateTime;
 use TimetrackerBundle\Entity\Employee;
 use TimetrackerBundle\Entity\Log;
 use TimetrackerBundle\Entity\Note;
+use Doctrine\ORM\EntityManager;
 
 class WorkTimeCalendar extends Calendar {
 
@@ -49,6 +50,9 @@ class WorkTimeCalendar extends Calendar {
 				if( $day->isWeekday() && !$this->getStatus($day) && !$this->getHoliday($day) ) {
 					$count++;
 				}
+			}
+			if( $this->getStatus($day) === 'Halber Tag' ) {
+				$count++;
 			}
 		}
 
@@ -106,6 +110,9 @@ class WorkTimeCalendar extends Calendar {
 					if( $day->isWeekday() && !$this->getStatus($day) && !$calendar->getHoliday($day) ) {
 						$count++;
 					}
+					if( $this->getStatus($day) === 'Halber Tag' ) {
+						$count++;
+					}					
 				}
 			}
 		
@@ -188,6 +195,9 @@ class WorkTimeCalendar extends Calendar {
 						if( $day->isWeekday() && !$this->getStatus($day) && !$calendar->getHoliday($day) ) {
 							$count++;
 						}
+						if( $this->getStatus($day) === 'Halber Tag' ) {
+							$count++;
+						}						
 					}
 				}
 			}
@@ -198,13 +208,27 @@ class WorkTimeCalendar extends Calendar {
 	
 	}
 
+	public function getTotalHalfDays() {
+
+        $half_days = $this->em->getRepository('TimetrackerBundle:Note')->findBy(
+        	array('employee' => $this->employee->getId(), 'status' => 4)
+        );	
+
+		return count($half_days);
+	
+	}
+
 	public function getOvertime() {
 		
 		$total_work = $this->getTotalWorkingHoursAllTime();
 
 		$total_days = $this->getTotalWorkdaysAllTime();
 		
+		$half_days = $this->getTotalHalfDays();
+
 		$total_needed_minutes = $total_days * 8 * 60;
+
+		$total_needed_minutes = $total_needed_minutes - $half_days * 4 * 60;
 
 		$overtime_minutes = $total_work - $total_needed_minutes;
 		

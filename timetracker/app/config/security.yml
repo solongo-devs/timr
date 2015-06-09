@@ -9,9 +9,6 @@ security:
             encode_as_base64:     true
             iterations:           1000
     role_hierarchy:
-        ROLE_LINKGENERATOR: ROLE_USER
-        ROLE_FEEDCHECKER: ROLE_USER
-        ROLE_PRICECHECKER: ROLE_USER
         ROLE_MDBOSS: ROLE_USER
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_MDBOSS, ROLE_ALLOWED_TO_SWITCH]

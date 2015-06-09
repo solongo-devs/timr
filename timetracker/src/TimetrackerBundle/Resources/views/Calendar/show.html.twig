@@ -48,7 +48,7 @@
 							   data-name="Status"
 							   data-type="select"
 							   data-pk="1"
-							   data-url="/employee/{{employee.id}}/notes/{{day.year}}/{{day.month}}/{{day.day}}"
+							   data-url="{{ path("notes_store", {'id': employee.id, 'year': day.year, 'month': day.month, 'day': day.day}) }}"
 							   data-title="Status">
 								{{ calendar.getStatus(day)|trim}}
 							</a>
@@ -59,7 +59,7 @@
 						   data-name="Body"
 						   data-type="textarea"
 						   data-pk="1"
-						   data-url="/employee/{{employee.id}}/notes/{{day.year}}/{{day.month}}/{{day.day}}"
+						   data-url="{{ path("notes_store", {'id': employee.id, 'year': day.year, 'month': day.month, 'day': day.day}) }}"
 						   data-title="Notiz">
 						   {{- calendar.note(day) -}}
 						</a>
@@ -87,7 +87,8 @@
 					{value: null, text: '-- Keine Angabe --' },
 					{value: 1, text: 'Urlaub'},
 					{value: 2, text: 'Krank'},
-					{value: 3, text: 'Schule'}
+					{value: 3, text: 'Schule'},
+					{value: 4, text: 'Halber Tag'}
 				],
 		    	emptytext: '<i class="glyphicon glyphicon-play"></i>',
 			});

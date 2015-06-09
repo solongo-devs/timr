@@ -16,7 +16,7 @@
       <ul class="nav navbar-nav navbar-right">
       	{% if is_granted('ROLE_ADMIN') %}<li><a href="{{ path('employee') }}">Mitarbeiter</a></li>{% endif %}
         {% if is_granted('ROLE_ADMIN') %}<li><a href="{{ path('card') }}">Karten</a></li>{% endif %}
-        <li><a href="{{ path('logout') }}">Ausloggen</a></li>
+        {% if is_granted('ROLE_USER') %}<li><a href="{{ path('logout') }}">Ausloggen</a></li>{% endif %}
       </ul>  
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

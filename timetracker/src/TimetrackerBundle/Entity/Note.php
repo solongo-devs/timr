@@ -15,7 +15,8 @@ class Note
     protected $statusOptions = [
         1 => 'Urlaub',
         2 => 'Krank',
-        3 => 'Schule'
+        3 => 'Schule',
+        4 => 'Halber Tag'
     ];
 
     /**
@@ -56,7 +57,7 @@ class Note
     private $body;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Employee", inversedBy="note")
+     * @ORM\ManyToOne(targetEntity="Employee", inversedBy="notes")
      * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
      */
     protected $employee;
