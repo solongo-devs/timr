@@ -14,10 +14,10 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-      	{% if is_granted('ROLE_ADMIN') %}<li><a href="{{ path('employee') }}">Mitarbeiter</a></li>{% endif %}
+      	{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MDBOSS') %}<li><a href="{{ path('employee') }}">Mitarbeiter</a></li>{% endif %}
         {% if is_granted('ROLE_ADMIN') %}<li><a href="{{ path('card') }}">Karten</a></li>{% endif %}
         {% if is_granted('ROLE_USER') %}<li><a href="{{ path('logout') }}">Ausloggen</a></li>{% endif %}
-      </ul>  
+      </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
