@@ -8,9 +8,18 @@ import logging.handlers
 import httplib
 import time
 import re
+import json
+import pika
 
 import nxppy
 import RPi.GPIO as GPIO
+
+class MsgNfc:
+    def __init__(self, uuid):
+        self.uuid = uuid
+        self.type = "nfc.uuid.read"
+        self.source = "nfc.reader"
+        self.device = "pi"
 
 LOG_FILENAME = "/var/log/nfc.log"
 LOG_LEVEL = logging.INFO
@@ -30,14 +39,23 @@ formatter = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+HOST = 'sldev'
+CRED = pika.PlainCredentials('admin', 'admin')
+connection = pika.BlockingConnection(pika.ConnectionParameters(
+    host=HOST, credentials=CRED))
+
+channel = connection.channel()
+channel.exchange_declare(exchange='solongo', type='fanout')
+
 def blinkled(led, duration, piep):
     GPIO.output(led, ON)
     if piep:
         GPIO.output(PIEP, ON)
     time.sleep(duration)
     GPIO.output(led, OFF)
-    if piep:    
+    if piep:
         GPIO.output(PIEP, OFF)
+
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -83,5 +101,5 @@ while True:
         pass
     except Exception:
         import traceback
+
         logger.error('generic exception: ' + traceback.format_exc())
-        pass
