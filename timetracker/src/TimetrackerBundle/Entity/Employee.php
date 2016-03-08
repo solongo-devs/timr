@@ -91,7 +91,7 @@ class Employee implements UserInterface, \Serializable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -114,7 +114,7 @@ class Employee implements UserInterface, \Serializable
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -137,7 +137,7 @@ class Employee implements UserInterface, \Serializable
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -180,7 +180,7 @@ class Employee implements UserInterface, \Serializable
     /**
      * Get cards
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCards()
     {
@@ -190,7 +190,7 @@ class Employee implements UserInterface, \Serializable
     /**
      * Get logs
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getLogs()
     {
@@ -233,7 +233,7 @@ class Employee implements UserInterface, \Serializable
     /**
      * Get notes
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getNotes()
     {
@@ -356,7 +356,11 @@ class Employee implements UserInterface, \Serializable
     }
 
 	public function getFirstDay() {
-		return $this->getLogs()->first()->getTime();
-	}
+        if( $this->getLogs()->first() ) {
+            return $this->getLogs()->first()->getTime();
+        } else {
+            return new \DateTime();
+        }
+    }
 
 }

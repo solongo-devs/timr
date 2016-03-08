@@ -177,7 +177,8 @@ class WorkTimeCalendar extends Calendar {
 			}
 
 			$start_month = 1;
-			if( $start_date->format('Y') == date('Y') ) {
+			$start_day = 1;
+			if( $i == $start_date->format('Y') ) {
 				$start_month = $start_date->format('m');
 				$start_day = $start_date->format('d');
 			}
@@ -200,6 +201,7 @@ class WorkTimeCalendar extends Calendar {
 						}
 					}
 				}
+
 			}
 
 		}
