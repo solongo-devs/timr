@@ -14,9 +14,9 @@
 			<tr>
 				<th colspan="4">
 					<div class="pull-right">
-						Gesamtarbeitszeit: {{ calendar.totalWorkingHours }} <br />
+						Gesamtarbeitszeit: <span class="working_hours">{{ calendar.totalWorkingHours }}</span> <br />
 						{% if(calendar.view != 'day') %}
-							Durchschnitt pro Tag (Monat): {{ calendar.averageHoursForMonth }}<br /> 
+							Durchschnitt pro Tag (Monat): {{ calendar.averageHoursForMonth }}<br />
 							Durchschnitt pro Tag (Jahr): {{ calendar.averagehoursforYear }}<br />
 							&Uuml;berstunden: {{ calendar.getOvertime }}
 						{% endif %}
@@ -92,6 +92,62 @@
 				],
 		    	emptytext: '<i class="glyphicon glyphicon-play"></i>',
 			});
+
+			{% for day in calendar.days %}
+				{% if calendar.hasIrregularLogs(day) %}
+					addTimer();
+
+					function addTimer() {
+						var timestring = $('.working_hours').html();
+						var timeparts = timestring.split(':');
+
+						var working_hours = parseInt(timeparts[0]);
+						var working_minutes = parseInt(timeparts[1]);
+
+						var date = new Date();
+						var date2 = new Date();
+
+						//var current_hours = date.getHours();
+						//var current_minutes = date.getMinutes();
+
+						{% for log in calendar.logs %}
+							{% if loop.last == 1 %}
+								var last_hours = parseInt('{{ log.time | date('H') }}');
+								var last_minutes = parseInt('{{ log.time | date('i') }}');
+							{% endif %}
+						{% endfor %}
+
+						date2.setHours(last_hours);
+						date2.setMinutes(last_minutes);
+
+						var timeDiff = Math.abs(date2.getTime() - date.getTime());
+						var diffMinutes = Math.ceil(timeDiff / (1000 * 60));
+
+						var hours = Math.floor(diffMinutes / 60);
+						var rest = diffMinutes - hours * 60;
+
+						var minutes = rest;
+
+						var total_hours = hours + working_hours;
+						var total_minutes = minutes + working_minutes;
+
+						if( total_minutes > 60 ) {
+							total_hours++;
+							total_minutes = total_minutes - 60;
+						}
+
+						if( total_hours < 10 ) {
+							total_hours = '0' + total_hours;
+						}
+						if( total_minutes < 10 ) {
+							total_minutes = '0' + total_minutes;
+						}
+
+						$('.working_hours').html(total_hours + ':' + total_minutes);
+					}
+				{% endif %}
+			{% endfor %}
+
 		});
 	</script>
 {% endblock %}

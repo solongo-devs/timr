@@ -58,7 +58,7 @@ class WorkTimeCalendar extends Calendar {
 
 		if( $count > 0 ) {
 			$avg_minutes = $minutes / $count;
-			$avg_hours = intval($avg_minutes / 60);	
+			$avg_hours = intval($avg_minutes / 60);
 			$rest_minutes = $avg_minutes % 60;
 
 			return sprintf('%02d:%02d', $avg_hours, $rest_minutes);
@@ -69,13 +69,13 @@ class WorkTimeCalendar extends Calendar {
 	}
 
 	public function getAverageHoursforYear() {
-		
+
 		$start_date = $this->employee->getFirstDay();
-		
+
 		$year = $this->year;
-		
+
 		$end_month = 12;
-		
+
 		if( $year == date('Y') ) {
 			$end_month = date('m');
 		}
@@ -112,15 +112,15 @@ class WorkTimeCalendar extends Calendar {
 					}
 					if( $this->getStatus($day) === 'Halber Tag' ) {
 						$count++;
-					}					
+					}
 				}
 			}
-		
+
 		}
 
 		if( $count > 0 ) {
 			$avg_minutes = $minutes / $count;
-			$avg_hours = intval($avg_minutes / 60);	
+			$avg_hours = intval($avg_minutes / 60);
 			$rest_minutes = $avg_minutes % 60;
 
 			return sprintf('%02d:%02d', $avg_hours, $rest_minutes);
@@ -134,50 +134,51 @@ class WorkTimeCalendar extends Calendar {
 		$start_year = 2015;
 		$end_year = date('Y');
 		$minutes = 0;
-		
+
 		for( $i = $start_year; $i <= $end_year; $i++ ) {
 
 			$end_month = 12;
-		
+
 			if( $i == date('Y') ) {
 				$end_month = date('m');
 			}
 
 			for( $month = 1; $month <= $end_month; $month++ ) {
-	
+
 				unset($calendar);
 				$calendar = new WorkTimeCalendar($this->requestStack, $this->router, $this->em, $month, $i);
 				$calendar->personalize($this->employee);
 				$hours_and_minutes = $calendar->getTotalWorkingHoursRaw();
 
 				$minutes += $hours_and_minutes[0] * 60 + $hours_and_minutes[1];
-			
+
 			}
-			
+
 		}
-		
+
 		return $minutes;
 	}
 
 	public function getTotalWorkdaysAllTime() {
 
 		$start_date = $this->employee->getFirstDay();
-			
+
 		$start_year = $start_date->format('Y');
 		$end_year = date('Y');
 		$minutes = 0;
-		
+
 		$count = 0;
 		for( $i = $start_year; $i <= $end_year; $i++ ) {
 
 			$end_month = 12;
-		
+
 			if( $i == date('Y') ) {
 				$end_month = date('m');
 			}
 
 			$start_month = 1;
-			if( $start_date->format('Y') == date('Y') ) {
+			$start_day = 1;
+			if( $i == $start_date->format('Y') ) {
 				$start_month = $start_date->format('m');
 				$start_day = $start_date->format('d');
 			}
@@ -186,44 +187,45 @@ class WorkTimeCalendar extends Calendar {
 				unset($calendar);
 				$calendar = new WorkTimeCalendar($this->requestStack, $this->router, $this->em, $month, $i);
 				$calendar->personalize($this->employee);
-	
+
 				foreach( $calendar->getDays() as $day ) {
 					if( $day->getYear() != date('Y') || $day->getMonth() != date('m') || $day->getDay() <= date('d') ) {
 						if( $day->getYear() == $start_date->format('Y') && $day->getMonth() == $start_date->format('m') && $day->getDay() < $start_day ) {
-							continue;							
+							continue;
 						}
 						if( $day->isWeekday() && !$this->getStatus($day) && !$calendar->getHoliday($day) ) {
 							$count++;
 						}
 						if( $this->getStatus($day) === 'Halber Tag' ) {
 							$count++;
-						}						
+						}
 					}
 				}
+
 			}
 
-		}		
+		}
 
 		return $count;
-	
+
 	}
 
 	public function getTotalHalfDays() {
 
         $half_days = $this->em->getRepository('TimetrackerBundle:Note')->findBy(
         	array('employee' => $this->employee->getId(), 'status' => 4)
-        );	
+        );
 
 		return count($half_days);
-	
+
 	}
 
 	public function getOvertime() {
-		
+
 		$total_work = $this->getTotalWorkingHoursAllTime();
 
 		$total_days = $this->getTotalWorkdaysAllTime();
-		
+
 		$half_days = $this->getTotalHalfDays();
 
 		$total_needed_minutes = $total_days * 8 * 60;
@@ -231,7 +233,7 @@ class WorkTimeCalendar extends Calendar {
 		$total_needed_minutes = $total_needed_minutes - $half_days * 4 * 60;
 
 		$overtime_minutes = $total_work - $total_needed_minutes;
-		
+
 		$overtime_hours = intval($overtime_minutes/60);
 		$overtime_minute_rest = $overtime_minutes % 60;
 
@@ -252,8 +254,8 @@ class WorkTimeCalendar extends Calendar {
 
 		$hours = $total->days * 24 + $total->h;
 		$minutes = $total->i;
-		
-		return array($hours, $minutes);	
+
+		return array($hours, $minutes);
 	}
 
 	public function getTotalWorkingHours()
@@ -284,7 +286,7 @@ class WorkTimeCalendar extends Calendar {
 				}
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -356,7 +358,7 @@ class WorkTimeCalendar extends Calendar {
 
 		return $this->notes[$day->format('Y-m-d')];
 	}
-	
+
 	protected function includeAdditionalData()
 	{
 		$notes = $this->employee->getNotes();
@@ -375,9 +377,9 @@ class WorkTimeCalendar extends Calendar {
 
 	public function hasIrregularLogs(Day $day) {
 		$logs = $this->getLogs();
-		
+
 		$dateString = $day->getYear().$day->getMonth().$day->getDay();
-		
+
 		$counter = 0;
 		foreach( $logs as $log ) {
 			$logDate = $log->getTime()->format('Ymd');
@@ -385,7 +387,7 @@ class WorkTimeCalendar extends Calendar {
 				$counter++;
 			}
 		}
-		
+
 		$isIrregular = $counter % 2;
 
 		return $isIrregular;
@@ -394,7 +396,7 @@ class WorkTimeCalendar extends Calendar {
 	/*===============================
 	=            Routing            =
 	===============================*/
-	
+
 	protected function defineRouteParameters(DateTime $date)
 	{
 		$employee = $this->employee->getId();
@@ -408,12 +410,12 @@ class WorkTimeCalendar extends Calendar {
 	/*==============================
 	=            Helper            =
 	==============================*/
-	
+
 	public function getLogs()
 	{
 		return $this->employee->getLogs()->filter(function($log) {
 			return $this->dateIsInCalendarPeriod($log->getTime());
 		});
 	}
-	
+
 }
