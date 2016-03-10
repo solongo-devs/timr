@@ -33,7 +33,7 @@ class Card
     private $employeeId;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Employee", inversedBy="card")
+     * @ORM\ManyToOne(targetEntity="Employee", inversedBy="cards")
      * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
      */
     protected $employee;
@@ -52,7 +52,7 @@ class Card
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -75,7 +75,7 @@ class Card
     /**
      * Get signature
      *
-     * @return string 
+     * @return string
      */
     public function getSignature()
     {
@@ -98,7 +98,7 @@ class Card
     /**
      * Get employeeId
      *
-     * @return integer 
+     * @return integer
      */
     public function getEmployeeId()
     {
@@ -121,7 +121,7 @@ class Card
     /**
      * Get employee
      *
-     * @return \TimetrackerBundle\Entity\Employee 
+     * @return \TimetrackerBundle\Entity\Employee
      */
     public function getEmployee()
     {
@@ -144,7 +144,7 @@ class Card
     /**
      * Get isActive
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsActive()
     {
@@ -177,7 +177,7 @@ class Card
     /**
      * Get logs
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getLogs()
     {

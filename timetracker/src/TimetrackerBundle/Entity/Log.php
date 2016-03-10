@@ -39,7 +39,7 @@ class Log
 
     /**
      * @var boolean
-     * 
+     *
      * @ORM\Column(name="is_edited", type="boolean", options={"default": false})
      */
     private $isEdited;
@@ -52,7 +52,7 @@ class Log
     private $backupTime;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Card", inversedBy="log")
+     * @ORM\ManyToOne(targetEntity="Card", inversedBy="logs")
      * @ORM\JoinColumn(name="card_signature", referencedColumnName="signature")
      */
     protected $card;
@@ -72,7 +72,7 @@ class Log
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -95,7 +95,7 @@ class Log
     /**
      * Get time
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getTime()
     {
@@ -118,7 +118,7 @@ class Log
     /**
      * Get card
      *
-     * @return \TimetrackerBundle\Entity\Card 
+     * @return \TimetrackerBundle\Entity\Card
      */
     public function getCard()
     {
@@ -141,7 +141,7 @@ class Log
     /**
      * Get cardSignature
      *
-     * @return string 
+     * @return string
      */
     public function getCardSignature()
     {
@@ -164,7 +164,7 @@ class Log
     /**
      * Get isEdited
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsEdited()
     {
@@ -187,7 +187,7 @@ class Log
     /**
      * Get backupTime
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getBackupTime()
     {
